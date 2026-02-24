@@ -16,7 +16,7 @@ const swaggerUi = require("swagger-ui-express");
 const app = express();
 
 app.use(cors({
-  origin: "https://2-devyogam24-02-26-qmep.vercel.app/"
+  origin: "https://2-devyogam24-02-26-6mw7.vercel.app/"
 }));
 
 app.use(express.json());
