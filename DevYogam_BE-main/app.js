@@ -15,9 +15,6 @@ const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
-app.use(cors({
-  origin: "https://2-devyogam24-02-26-yekc.vercel.app/"
-}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,9 +34,10 @@ app.use(express.urlencoded({ extended: true }));
     //   "http://localhost:3000", // ✅ allow deployed frontend
     // ];
 app.use(cors({
-  origin: "http://localhost:3000",  // frontend ka exact URL
+  origin: "https://2-devyogam24-02-26-yekc.vercel.app/",  // frontend ka exact URL
   credentials: true
 }));
+
     // app.use(
     //   cors({
     //     origin: (origin, callback) => {
