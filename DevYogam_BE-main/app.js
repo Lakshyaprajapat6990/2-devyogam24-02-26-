@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
     //   "http://localhost:3000", // ✅ allow deployed frontend
     // ];
 app.use(cors({
-  origin: "https://2-devyogam24-02-26-yekc.vercel.app/",  // frontend ka exact URL
+  origin: "https://2-devyogam24-02-26-yekc.vercel.app",
   credentials: true
 }));
 
@@ -68,10 +68,10 @@ app.use(cors({
           description: "API documentation for Dev Yogam (Users, Poojas, Temples, Payments, Files)",
         },
         servers: [
-          {
-            url: `http://localhost:${process.env.PORT || 5000}`,
-          },
-        ],
+  {
+    url: process.env.BASE_URL || "http://localhost:5000",
+  },
+],
       },
       apis: [path.join(__dirname, "./routes/userRoutes.js"),
              path.join(__dirname, "./routes/poojaRoutes.js"),
