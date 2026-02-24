@@ -15,6 +15,10 @@ const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
+app.use(cors({
+  origin: "https://2-devyogam24-02-26-qmep.vercel.app/"
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Connect DB and start server
