@@ -34,7 +34,10 @@ app.use(express.urlencoded({ extended: true }));
     //   "http://localhost:3000", // ✅ allow deployed frontend
     // ];
 app.use(cors({
-  origin: "https://2-devyogam24-02-26-yekc.vercel.app",
+  origin: [
+    "https://devyogam.com",
+    "https://www.devyogam.com"
+  ],
   credentials: true
 }));
 
