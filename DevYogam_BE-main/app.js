@@ -72,6 +72,4 @@ app.get("/", (req, res) => {
   res.send("API is running 🚀");
 });
 
-// ❌ REMOVE app.listen
-// ✅ ADD THIS
 module.exports = app;
