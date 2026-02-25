@@ -9,30 +9,19 @@ const templeRoutes = require("./routes/templeRoutes");
 const chadavaRoutes = require("./routes/chadhavaRoutes");
 const payRoutes = require("./routes/payRoutes");
 const fileRoutes = require("./routes/fileRoutes");
-const reviewsRoutes = require('./routes/reviewsRoutes')
+const reviewsRoutes = require("./routes/reviewsRoutes");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
+// 🔥 Connect DB directly (NO async wrapper)
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// Connect DB and start server
-(async () => {
-  try {
-    await connectDB();
 
-    const allowedOrigins = [
-      process.env.CLIENT_URL_LOCAL,
-      process.env.CLIENT_URL,
-      process.env.CLIENT_URL_2,
-    ];
-
-    // CORS setup
-    // const allowedOrigins = [
-    //   "http://localhost:3000", // ✅ allow deployed frontend
-    // ];
+// ✅ CORS
 app.use(cors({
   origin: [
     "https://devyogam.com",
@@ -41,74 +30,44 @@ app.use(cors({
   credentials: true
 }));
 
-    // app.use(
-    //   cors({
-    //     origin: (origin, callback) => {
-    //       if (!origin) return callback(null, true); // allow curl / server-to-server
-    //       if (allowedOrigins.includes(origin)) {
-    //         callback(null, true);
-    //       } else {
-    //         callback(new Error("Not allowed by CORS"));
-    //       }
-    //     },
-    //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    //     credentials: true,
-    //     allowedHeaders: ["Content-Type", "Authorization"],
-    //   })
-    // );
+app.get("/favicon.ico", (req, res) => res.status(204).end());
 
-
-    // Favicon handler (prevent 404 errors in browser)
-    app.get("/favicon.ico", (req, res) => res.status(204).end());
-
-    // Swagger setup
-    const swaggerOptions = {
-      swaggerDefinition: {
-        openapi: "3.0.0",
-        info: {
-          title: "Dev Yogam API",
-          version: "1.0.0",
-          description: "API documentation for Dev Yogam (Users, Poojas, Temples, Payments, Files)",
-        },
-        servers: [
-  {
-    url: process.env.BASE_URL || "http://localhost:5000",
+// Swagger
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Dev Yogam API",
+      version: "1.0.0",
+      description: "API documentation",
+    },
+    servers: [
+      {
+        url: "https://devyogam.com"
+      }
+    ],
   },
-],
-      },
-      apis: [path.join(__dirname, "./routes/userRoutes.js"),
-             path.join(__dirname, "./routes/poojaRoutes.js"),
-             path.join(__dirname, "./routes/templeRoutes.js"),
-             path.join(__dirname, "./routes/chadhavaRoutes.js"),
-             path.join(__dirname, "./routes/payRoutes.js"),
-             path.join(__dirname, "./routes/fileRoutes.js"),
-             path.join(__dirname, "./routes/reviewsRoutes.js")],
-    };
+  apis: [
+    path.join(__dirname, "./routes/*.js")
+  ],
+};
 
-    const swaggerSpecs = swaggerJsdoc(swaggerOptions);
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+const swaggerSpecs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-    // Routes
-    app.use("/api/users", userRoutes);
-    app.use("/api/poojas", poojaRoutes);
-    app.use("/api/temples", templeRoutes);
-    app.use("/api/chadhavas", chadavaRoutes);
-    app.use("/api/payment", payRoutes);
-    app.use("/api/files", fileRoutes);
-    app.use("/api/reviews",reviewsRoutes)
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/poojas", poojaRoutes);
+app.use("/api/temples", templeRoutes);
+app.use("/api/chadhavas", chadavaRoutes);
+app.use("/api/payment", payRoutes);
+app.use("/api/files", fileRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
-    // Root route
-    app.get("/", (req, res) => {
-      res.send("API is running...");
-    });
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
 
-    // Start server
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-      console.log(`✅ Server running on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("❌ Failed to start server:", error);
-    process.exit(1);
-  }
-})();
+// ❌ REMOVE app.listen
+// ✅ ADD THIS
+module.exports = app;
