@@ -22,14 +22,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS
+// app.use(cors({
+//   origin: [
+//     "https://devyogam.com",
+//     "https://www.devyogam.com"
+//   ],
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin: [
-    "https://devyogam.com",
-    "https://www.devyogam.com"
-  ],
+  origin: true,
   credentials: true
 }));
-
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 // Swagger
